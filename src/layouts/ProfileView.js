@@ -1,6 +1,7 @@
 import { Layout, Menu } from 'antd';
 import { HeaderWithSearch } from '../components/Header';
 import { MenuList } from './MenuList';
+import { ReviewList } from './ReviewList';
 
 const { Content } = Layout;
 
@@ -19,7 +20,9 @@ function ProfileView() {
       </Menu>
       <div className="site-layout-content">Content 2</div>
       <MenuList />
+      <ReviewList/>
     </Content>
+
   </Layout>
   );
 }
