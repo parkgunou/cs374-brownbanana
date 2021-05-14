@@ -4,7 +4,7 @@ import { BellOutlined, UserOutlined } from '@ant-design/icons';
 import '../css/Header.css';
 import React from 'react';
 
-class HeaderNavMenu extends React.Component {
+export default class HeaderNavMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +25,7 @@ class HeaderNavMenu extends React.Component {
       <>
         <Tooltip className="personalmenuelem" title="Profile" style={{ color: 'white' }}>
           <div>
-            <a href="#" onClick={this.renderMyProfile()} >
+            <a onClick={this.renderMyProfile()} >
               <UserOutlined style={{ color: 'white', margin: '0px 2px 0px 2px' }} />
               <span style={{ color: 'white' }}>Peggy Lee</span>
             </a>
@@ -33,7 +33,7 @@ class HeaderNavMenu extends React.Component {
         </Tooltip>
         <Tooltip className="personalmenuelem" title="Notifications">
           <div>
-            <a href="#" onClick={this.showNotification()}>
+            <a onClick={this.showNotification()}>
               <Badge count={this.state.notiCount} size='small' >
                 <BellOutlined style={{ color: 'white' }} />
               </Badge>
@@ -44,5 +44,3 @@ class HeaderNavMenu extends React.Component {
     );
   }
 }
-
-export default HeaderNavMenu;
