@@ -1,29 +1,32 @@
-import { Layout, Menu } from 'antd';
+import { Layout, Tabs } from 'antd';
 
-import ProfileBio from './ProfileBio';
+import MenuList from '../components/MenuList';
+import ProfileBio from '../components/ProfileBio';
+import ReviewList from '../components/ReviewList';
 import { HeaderWithSearch } from '../components/Header';
-import { MenuList } from './MenuList';
-import { ReviewList } from './ReviewList';
 
 const { Content } = Layout;
+const { TabPane } = Tabs;
 
 function ProfileView() {
   return (
-  <Layout className="layout">
-    <HeaderWithSearch></HeaderWithSearch>
-    <ProfileBio />
-    <Content style={{ padding: '0 50px' }}>
-      <Menu mode="horizontal">
-        <Menu.Item>Tab 1</Menu.Item>
-        <Menu.Item>Tab 2</Menu.Item>
-        <Menu.Item>Tab 3</Menu.Item>
-      </Menu>
-      <div className="site-layout-content">Content 2</div>
-      <MenuList />
-      <ReviewList/>
-    </Content>
+    <Layout className="layout">
+      <HeaderWithSearch></HeaderWithSearch>
+      <ProfileBio />
+      <Content style={{ padding: '0 50px' }}>
+        <Tabs defaultActiveKey="1">
+          <TabPane tab="Styles" key="1">
 
-  </Layout>
+          </TabPane>
+          <TabPane tab="Reviews" key="2">
+            <ReviewList />
+          </TabPane>
+          <TabPane tab="Menu" key="3">
+            <MenuList />
+          </TabPane>
+        </Tabs>
+      </Content>
+    </Layout>
   );
 }
 
