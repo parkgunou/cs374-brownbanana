@@ -6,6 +6,9 @@ import ProfileView from './layouts/ProfileView';
 import reportWebVitals from './reportWebVitals';
 
 import 'antd/dist/antd.css';
+import { initFirebase } from './Firebase';
+
+initFirebase()
 
 ReactDOM.render(
   <React.StrictMode>
