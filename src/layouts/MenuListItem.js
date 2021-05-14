@@ -3,7 +3,7 @@ import { Typography, Divider, Space, Image, Row, Col } from 'antd';
 import { DashboardOutlined, StarOutlined } from '@ant-design/icons';
 import '../css/Menu.css';
 
-const { Title, Paragraph, Text, Link } = Typography;
+const { Title, Text } = Typography;
 
 const IconText = ({ icon, text }) => (
     <Space>
@@ -29,7 +29,8 @@ export class MenuListItem extends React.Component {
                         </Space>
                     </Space>
                 </Col>
-                <Col span={6}>
+                <Col span={2} />
+                <Col span={4}>
                     <Image className='menu-image' src={this.props.image} />
                 </Col>
             </Row>

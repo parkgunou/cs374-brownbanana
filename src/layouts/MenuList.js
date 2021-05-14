@@ -1,6 +1,7 @@
 import React from 'react';
 import { List } from 'antd';
 import { MenuListItem } from './MenuListItem';
+import { getFirebaseDB } from '../Firebase';
 
 const items = [
     {
@@ -30,10 +31,27 @@ const items = [
 ]
 
 export class MenuList extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            itemList : []
+        }
+    }
+
+    componentDidMount() {
+        getFirebaseDB().once('value')
+            .then(snapshot => {
+                this.setState({
+                    itemList: items
+                })
+            })
+    }
+
     render() {
         return(
             <List
-                dataSource={items}
+                dataSource={this.state.itemList}
                 renderItem={item => (
                     <MenuListItem 
                         name={item.name} 
