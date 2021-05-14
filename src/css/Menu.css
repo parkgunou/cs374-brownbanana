@@ -1,0 +1,14 @@
+.menu-box {
+    padding: 10px;
+    background: white;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.menu-contents {
+    width: auto;
+}
+
+.menu-image {
+    float: right;
+}
