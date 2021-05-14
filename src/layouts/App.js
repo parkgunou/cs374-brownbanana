@@ -1,6 +1,6 @@
 import './App.css';
 import { Layout, Breadcrumb } from 'antd';
-import { HeaderWithSearch } from './components/Header';
+import { HeaderWithSearch } from '../components/Header';
 
 const { Content, Footer } = Layout;
 
