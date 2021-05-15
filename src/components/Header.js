@@ -15,10 +15,12 @@ export function HeaderWithSearch() {
           display:'flex',
           justifyContent: 'space-between',
           height: 'fit-content',
-          lineHeight: 'normal'
+          lineHeight: 'normal',
+          paddingLeft: '20%',
+          paddingRight: '20%'
         }
       }
-    >
+    > 
       <div className="headersection" >
         <img src={logo} alt="BB Hairshop" style={{ height: '100%'}} />
       </div>

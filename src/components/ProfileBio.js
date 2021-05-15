@@ -38,11 +38,14 @@ export default class ProfileBio extends React.Component {
   }
   render () {
     return (
-      <Content style={{ padding: '0 50px' }}>
-        <Row>
-          <Col flex="300px">
+      <Content style={{ 
+          paddingLeft: '20%',
+          paddingRight: '20%'
+        }}>
+        <Row wrap={false}>
+          <Col flex="150px">
             <div className="container" >
-              <Avatar src={this.profile.image} size={200} />
+              <Avatar src={this.profile.image} size={150} />
             </div>
           </Col>
           <Col flex="auto">

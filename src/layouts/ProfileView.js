@@ -13,7 +13,7 @@ function ProfileView() {
     <Layout className="layout">
       <HeaderWithSearch></HeaderWithSearch>
       <ProfileBio />
-      <Content style={{ padding: '0 50px' }}>
+      <Content style={{ paddingLeft: '20%', paddingRight: '20%' }}>
         <Tabs defaultActiveKey="1">
           <TabPane tab="Styles" key="1">
 
