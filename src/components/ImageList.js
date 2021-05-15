@@ -22,6 +22,11 @@ const imageDes = [{
         "style": "Woman haircut",
         "description": "I am a girl",
         "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+    },
+    {
+        "style": "Woman perm",
+        "description": "I am a girl",
+        "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
     }
 ]
 
@@ -44,7 +49,7 @@ export default class ImageList extends React.Component {
     render() {
         return ( <
             List grid = {
-                { gutter: 16, column: 3 }
+                { gutter: 16, column: 4 }
             }
             dataSource = { this.state.imageList }
             renderItem = {
