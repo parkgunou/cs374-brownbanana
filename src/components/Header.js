@@ -7,7 +7,7 @@ import HeaderSearchBar from './HeaderSearchBar';
 
 const { Header } = Layout;
 
-export function HeaderWithSearch() {
+export function HeaderWithSearch(props) {
   return (
     <Header
       style={
@@ -29,6 +29,7 @@ export function HeaderWithSearch() {
       </div>
       <div className="headersection" >
         <HeaderNavMenu
+          name={props.name}
           notifications={[]}
           className="personalnav"
           style={{ display:'flex', alignItems: 'center'}}
@@ -38,7 +39,7 @@ export function HeaderWithSearch() {
   );
 }
 
-export function HeaderWithoutSearch() {
+export function HeaderWithoutSearch(props) {
   return (
     <Header
       style={
@@ -46,7 +47,9 @@ export function HeaderWithoutSearch() {
           display:'flex',
           justifyContent: 'space-between',
           height: 'fit-content',
-          lineHeight: 'normal'
+          lineHeight: 'normal',
+          paddingLeft: '20%',
+          paddingRight: '20%'
         }
       }
     >
@@ -55,10 +58,32 @@ export function HeaderWithoutSearch() {
       </div>
       <div className="headersection" >
         <HeaderNavMenu
+          name={props.name}
           notifications={[]}
           className="personalnav"
           style={{ display:'flex', alignItems: 'center'}}
         />
+      </div>
+    </Header>
+  );
+}
+
+export function HeaderNoProfile() {
+  return (
+    <Header
+      style={
+        {
+          display:'flex',
+          justifyContent: 'space-between',
+          height: 'fit-content',
+          lineHeight: 'normal',
+          paddingLeft: '20%',
+          paddingRight: '20%'
+        }
+      }
+    >
+      <div className="headersection" >
+        <img src={logo} alt="BB Hairshop" style={{ height: '100%'}} />
       </div>
     </Header>
   );

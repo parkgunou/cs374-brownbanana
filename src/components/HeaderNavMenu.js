@@ -8,6 +8,7 @@ export default class HeaderNavMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: props.name,
       notiCount: props.notifications.length
     }
   }
@@ -27,7 +28,7 @@ export default class HeaderNavMenu extends React.Component {
           <div>
             <a onClick={this.renderMyProfile()} >
               <UserOutlined style={{ color: 'white', margin: '0px 2px 0px 2px' }} />
-              <span style={{ color: 'white' }}>Peggy Lee</span>
+              <span style={{ color: 'white' }}>{this.state.name}</span>
             </a>
           </div>
         </Tooltip>

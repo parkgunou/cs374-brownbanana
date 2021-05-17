@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import 'antd/dist/antd.css';
 import { initFirebase } from './Firebase';
 
-initFirebase()
+initFirebase();
 
 ReactDOM.render(
   <React.StrictMode>
