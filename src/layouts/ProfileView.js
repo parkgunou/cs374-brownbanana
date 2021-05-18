@@ -5,7 +5,7 @@ import MenuList from '../components/MenuList';
 import ProfileBio from '../components/ProfileBio';
 import ReviewList from '../components/ReviewList';
 import ImageList from '../components/ImageList';
-import { HeaderNoProfile, HeaderWithSearch } from '../components/Header';
+import { HeaderNoProfile, HeaderWithoutSearch } from '../components/Header';
 import { getFirebaseDB } from '../Firebase';
 
 const { Content } = Layout;
@@ -14,35 +14,34 @@ const { TabPane } = Tabs;
 export default class ProfileView extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      "stylist": {}
-    }
+    this.name = props.name;
+    this.state = {}
   }
 
   componentDidMount() {
     getFirebaseDB('stylists')
-      .orderByChild('name').equalTo('Peggy')
+      .orderByChild('name').equalTo(this.name)
       .once('value')
       .then(snapshot => {
         const data = snapshot.val();
 
-        if (data.length < 1) {
+        if (Object.keys(data).length < 1) {
           alert("No record in DB for profile");
         }
-        else if (data.length > 1) {
+        else if (Object.keys(data).length > 1) {
           alert("More than 1 record in DB for profile (same name)")
         }
         else {
-          this.setState({ "stylist": data[0] });
+          this.setState({ "stylist": data[Object.keys(data)[0]] });
         }
       });
   }
 
   render() {
-    const isLoaded = this.state.stylist.name ? true : false;
+    const isLoaded = this.state.stylist?.name ? true : false;
     let headerComp, profileBioComp, stylesComp, reviewsComp, menusComp;
     if (isLoaded) {
-      headerComp = <HeaderWithSearch name={this.state.stylist.name} />;
+      headerComp = <HeaderWithoutSearch name={this.state.stylist.name} />;
       profileBioComp = <ProfileBio stylist={this.state.stylist} />;
       stylesComp = <ImageList stylekeys={this.state.stylist.style_keys} />;
       reviewsComp = <ReviewList reviewkeys={this.state.stylist.review_keys} />;

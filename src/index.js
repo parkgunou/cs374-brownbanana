@@ -1,18 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-//import App from './App';
-import ProfileView from './layouts/ProfileView';
+import 'antd/dist/antd.css';
+
+import { initFirebase } from './Firebase';
+import HomeScreen from './layouts/HomeScreen';
 import reportWebVitals from './reportWebVitals';
 
-import 'antd/dist/antd.css';
-import { initFirebase } from './Firebase';
+import './index.css';
+
 
 initFirebase();
 
 ReactDOM.render(
   <React.StrictMode>
-    <ProfileView />
+    <HomeScreen />
   </React.StrictMode>,
   document.getElementById('root')
 );
