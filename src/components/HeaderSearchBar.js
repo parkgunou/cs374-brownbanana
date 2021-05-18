@@ -23,6 +23,6 @@ export default class HeaderSearchBar extends React.Component {
         style={{ width: '400px', textAlign: 'left' }}
         enterButton
       />
-    )
+    );
   }
 }

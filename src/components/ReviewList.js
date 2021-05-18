@@ -51,7 +51,7 @@ export default class ReviewList extends React.Component {
           image={item.image_url}
           />
         )}
-        />
-        )
-      }
-    }
+      />
+    );
+  }
+}

@@ -45,7 +45,7 @@ export default class MenuList extends React.Component {
         this.setState({
           itemList: items
         })
-      })
+      });
   }
 
   render() {
@@ -63,6 +63,6 @@ export default class MenuList extends React.Component {
           />
         )}
       />
-    )
+    );
   }
 }
