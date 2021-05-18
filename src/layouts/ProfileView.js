@@ -7,6 +7,7 @@ import ReviewList from '../components/ReviewList';
 import ImageList from '../components/ImageList';
 import { HeaderNoProfile, HeaderWithoutSearch } from '../components/Header';
 import { getFirebaseDB } from '../Firebase';
+import { Stylist } from '../models/Stylist';
 
 const { Content } = Layout;
 const { TabPane } = Tabs;
@@ -21,20 +22,25 @@ export default class ProfileView extends React.Component {
   componentDidMount() {
     getFirebaseDB('stylists')
       .orderByChild('name').equalTo(this.name)
+      .limitToFirst(1)
       .once('value')
       .then(snapshot => {
-        const data = snapshot.val();
-
-        if (Object.keys(data).length < 1) {
+        if (!snapshot.exists()) {
           alert("No record in DB for profile");
+          return
         }
-        else if (Object.keys(data).length > 1) {
-          alert("More than 1 record in DB for profile (same name)")
-        }
-        else {
-          this.setState({ "stylist": data[Object.keys(data)[0]] });
-        }
-      });
+
+        var self = this
+        snapshot.forEach( function(snap, index) {
+          const data = snap.val();
+          const stylist = new Stylist(data);
+
+          console.log(stylist)
+          
+          self.setState({ "stylist": stylist });
+        })
+      })
+      .catch(error => console.log(error));
   }
 
   render() {

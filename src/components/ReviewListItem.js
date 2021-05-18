@@ -9,38 +9,31 @@ const { Text } = Typography;
 export default class ReviewListItem extends React.Component {
   ratingStar(){
     const rating=[];
-    let i=0, j=0;
-    for (i=0; i<this.props.rating; i++){
+
+    for (var i=0; i<this.props.rating; i++){
       rating.push(<StarFilled />)
     }
-    for (j=0; j<5-this.props.rating; j++){
+    for (var j=0; j<5-this.props.rating; j++){
       rating.push(<StarOutlined />)
     }
     return rating
   }
   
   render() {
+  const review = this.props.review
     return (
-      <Row className='review-box'>
-        <Col span={18}>
-          <Space direction='vertical' className='review-contents'>
-            <Text strong>{this.props.style}</Text>
-            <Space direction='horizontal'>
-                {this.ratingStar()}
-                <Text>{this.props.rating}.0</Text>
-            </Space>
-            <Text>{this.props.mention}</Text>
-            <Space direction='horizontal'>
-                <Text type='secondary'>{this.props.name}  |</Text>
-                <Text type='secondary'>{this.props.date} days ago</Text>
-            </Space>
-          </Space>
-        </Col>
-        <Col span={2} />
-        <Col span={4}>
-          <Image className='review-image' src={this.props.image} />
-        </Col>
-      </Row>
+      <Space direction='vertical' className='review-box'>
+        <Text strong>{review.menu}</Text>
+        <Space direction='horizontal'>
+            {this.ratingStar()}
+            <Text>{review.rating}.0</Text>
+        </Space>
+        <Text>{review.description}</Text>
+        <Space direction='horizontal'>
+            <Text type='secondary'>{review.reviewer}  |</Text>
+            <Text type='secondary'>{review.created_at} days ago</Text>
+        </Space>
+      </Space>
     );
   }
 }

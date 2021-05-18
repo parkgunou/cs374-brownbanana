@@ -2,6 +2,7 @@ import React from 'react';
 import { List } from 'antd';
 
 import ReviewListItem from './ReviewListItem';
+import { getFirebaseDB } from '../Firebase';
 
 const items = [
   {
@@ -37,19 +38,47 @@ const items = [
 ]
 
 export default class ReviewList extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      "reviews": []
+    }
+  }
+
+  componentDidMount() {
+    const reviews = []
+    const self = this
+
+    this.props.reviewkeys.forEach(key => {
+      getFirebaseDB('reviews')
+        .orderByKey().equalTo(key)
+        .limitToFirst(1)
+        .once('value')
+        .then(snapshot => {
+          if (!snapshot.exists()) {
+            alert("No record in DB for profile");
+            return
+          }
+
+          snapshot.forEach( function(snap, index) {
+            const data = snap.val();
+
+            console.log(data)
+            reviews.push(data)
+            self.setState({ "reviews": reviews })
+          })
+        })
+        .catch(error => console.log(error));
+    })
+  }
+
   render() {
     return(
       <List
-      dataSource={items}
+      dataSource={this.state.reviews}
       renderItem={item => (
-        <ReviewListItem 
-          style={item.style}
-          rating={item.rating} 
-          mention={item.mention}
-          name={item.name} 
-          date={item.date}
-          image={item.image_url}
-          />
+        <ReviewListItem review={item} />
         )}
       />
     );

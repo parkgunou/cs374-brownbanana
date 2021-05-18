@@ -35,23 +35,41 @@ export default class MenuList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      itemList : []
+      "menus": []
     }
   }
 
   componentDidMount() {
-    getFirebaseDB().once('value')
-      .then(snapshot => {
-        this.setState({
-          itemList: items
+    const menus = []
+    const self = this
+
+    this.props.menukeys.forEach(key => {
+      getFirebaseDB('menus')
+        .orderByKey().equalTo(key)
+        .limitToFirst(1)
+        .once('value')
+        .then(snapshot => {
+          if (!snapshot.exists()) {
+            alert("No record in DB for profile");
+            return
+          }
+
+          snapshot.forEach( function(snap, index) {
+            const data = snap.val();
+
+            console.log(data)
+            menus.push(data)
+            self.setState({ "menus": menus })
+          })
         })
-      });
+        .catch(error => console.log(error));
+    })
   }
 
   render() {
     return(
       <List
-        dataSource={this.state.itemList}
+        dataSource={this.state.menus}
         renderItem={item => (
           <MenuListItem 
             name={item.name} 
