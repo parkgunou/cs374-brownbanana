@@ -4,7 +4,7 @@ import { MessageOutlined, StarOutlined, EyeOutlined } from '@ant-design/icons';
 
 import '../css/SearchList.css';
 
-const { Title, Text } = Typography;
+const { Paragraph, Title, Text } = Typography;
 
 const IconText = ({ icon, text }) => ( 
   <Space > 
@@ -36,10 +36,9 @@ export default class SearchListItem extends React.Component {
               <IconText icon = { EyeOutlined }
                 text = { this.props.followers } />
             </Space > 
-            <Text type = 'primary'
-              className = "profile-intro" > 
+            <Paragraph ellipsis= {{ rows: 3, expandable: true }} className = "profile-intro" > 
               { this.props.intro } 
-            </Text> 
+            </Paragraph>
             <Text type = 'secondary'
               className = "profile-salon"
               strong > 
