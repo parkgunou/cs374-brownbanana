@@ -42,7 +42,8 @@ export default class ReviewList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      "reviews": []
+      "reviews": [],
+      "reviewkeys": props.reviewkeys
     }
   }
 
@@ -64,7 +65,6 @@ export default class ReviewList extends React.Component {
           snapshot.forEach( function(snap, index) {
             const data = snap.val();
 
-            console.log(data)
             reviews.push(data)
             self.setState({ "reviews": reviews })
           })

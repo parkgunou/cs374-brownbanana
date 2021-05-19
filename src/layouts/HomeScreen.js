@@ -6,6 +6,7 @@ import { getFirebaseDB } from '../Firebase';
 import { Stylist } from '../models/Stylist';
 import { HeaderNoProfile } from '../components/Header';
 import ProfileView from './ProfileView';
+import SearchScreen from './SearchScreen';
 
 import '../css/HomeScreen.css';
 
@@ -47,13 +48,28 @@ export default class HomeScreen extends React.Component {
     );
   }
 
+  onClickSearchProfile() {
+    ReactDom.render(
+      <React.StrictMode >
+        <SearchScreen />
+      </React.StrictMode>,
+      document.getElementById('root')
+    );
+  }
+
   render() {
     return (
       <Layout className="layout">
         <HeaderNoProfile className="background" />
         <Content className="background" style={{ paddingTop: '10%', paddingBottom: '10%' }} >
           <Space direction="vertical" align="center" size={20} style={{ width: '100%' }}>
-            <Button className="navbutton" type="primary" block>Search for stylist</Button>
+            <Button
+              className="navbutton"
+              type="primary"
+              block
+              onClick={this.onClickSearchProfile} >
+              Search for stylist
+            </Button>
             <Divider />
             <Button className="navbutton" type="default" block>Create new profile</Button>
             <Divider />

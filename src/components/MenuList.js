@@ -57,7 +57,6 @@ export default class MenuList extends React.Component {
           snapshot.forEach( function(snap, index) {
             const data = snap.val();
 
-            console.log(data)
             menus.push(data)
             self.setState({ "menus": menus })
           })
