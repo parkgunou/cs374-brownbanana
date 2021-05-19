@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Space, Image, Row, Col } from 'antd';
+import { Typography, Space } from 'antd';
 import { StarOutlined ,StarFilled } from '@ant-design/icons';
 
 import '../css/Review.css';

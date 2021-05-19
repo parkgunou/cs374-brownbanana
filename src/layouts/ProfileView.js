@@ -30,7 +30,7 @@ export default class ProfileView extends React.Component {
           return
         }
 
-        var self = this
+        var self = this;
         snapshot.forEach( function(snap, index) {
           const data = snap.val();
           const stylist = new Stylist(data);
