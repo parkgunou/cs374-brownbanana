@@ -15,7 +15,6 @@ const IconText = ({ icon, text }) => (
 
 export default class MenuListItem extends React.Component {
   render() {
-    console.log(this.props)
     return (
       <Row className='menu-box'>
         <Col span={18}>

@@ -47,6 +47,7 @@ export default class ProfileView extends React.Component {
     const isLoaded = this.state.stylist?.name ? true : false;
     let headerComp, profileBioComp, stylesComp, reviewsComp, menusComp;
     if (isLoaded) {
+      // console.log(this.state.stylist.style_keys)
       headerComp = <HeaderWithoutSearch name={this.state.stylist.name} />;
       profileBioComp = <ProfileBio stylist={this.state.stylist} />;
       stylesComp = <ImageList stylekeys={this.state.stylist.style_keys} />;
