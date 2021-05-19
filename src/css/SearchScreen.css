@@ -1,0 +1,27 @@
+#searchFilter {
+    font-size: x-large;
+    font-weight: bold;
+    font-family: 'Lato', sans-serif;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+#searchagain {
+    float: right;
+    margin-right: -40%;
+}
+
+.search_forms {
+    width: 600px;
+    font-size: medium;
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+}
+
+#searchResult {
+    font-size: x-large;
+    font-weight: bold;
+    font-family: 'Lato', sans-serif;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
