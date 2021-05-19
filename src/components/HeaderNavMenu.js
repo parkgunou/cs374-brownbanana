@@ -1,8 +1,11 @@
-import { Badge, Tooltip } from 'antd';
-import { BellOutlined, UserOutlined } from '@ant-design/icons';
+import React from 'react';
+import ReactDom from 'react-dom';
+import { Button, Tooltip } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+
+import ProfileView from '../layouts/ProfileView';
 
 import '../css/Header.css';
-import React from 'react';
 
 export default class HeaderNavMenu extends React.Component {
   constructor(props) {
@@ -13,12 +16,13 @@ export default class HeaderNavMenu extends React.Component {
     }
   }
 
-  renderMyProfile() {
-    //TODO
-  }
-
-  showNotification() {
-    //TODO
+  renderMyProfile(name) {
+    ReactDom.render(
+      <React.StrictMode>
+        <ProfileView name={name} />
+      </React.StrictMode>,
+      document.getElementById('root')
+    );
   }
 
   render() {
@@ -26,19 +30,10 @@ export default class HeaderNavMenu extends React.Component {
       <>
         <Tooltip className="personalmenuelem" title="Profile" style={{ color: 'white' }}>
           <div>
-            <a onClick={this.renderMyProfile()} >
-              <UserOutlined style={{ color: 'white', margin: '0px 2px 0px 2px' }} />
+            <Button type='text' onClick={() => { this.renderMyProfile(this.state.name) }} >
+              <UserOutlined style={{ color: 'white', margin: '0px 4px 0px 2px' }} />
               <span style={{ color: 'white' }}>{this.state.name}</span>
-            </a>
-          </div>
-        </Tooltip>
-        <Tooltip className="personalmenuelem" title="Notifications">
-          <div>
-            <a onClick={this.showNotification()}>
-              <Badge count={this.state.notiCount} size='small' >
-                <BellOutlined style={{ color: 'white' }} />
-              </Badge>
-            </a>
+            </Button>
           </div>
         </Tooltip>
       </>
