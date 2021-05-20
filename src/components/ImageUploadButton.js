@@ -81,13 +81,6 @@ export class ImageUploadButton extends React.Component {
         >
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
         </Modal>
-        {/* <Button
-          type="primary"
-          onClick={this.handleUpload}
-          style={{ marginTop: 16 }}
-        >
-        Upload
-        </Button> */}
       </>
     );
   }
