@@ -14,9 +14,16 @@ const { Title } = Typography;
 
 export default class NewMenuView extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.handleFilelistChange = this.handleFilelistChange.bind(this);
     this.name = props.name;
-    this.state = {}
+    this.state = {
+      filelist: []
+    }
+  }
+
+  handleFilelistChange(filelist) {
+    this.setState({ filelist: filelist });
   }
 
   onClickCancel(name) {
@@ -27,10 +34,11 @@ export default class NewMenuView extends React.Component {
       document.getElementById('root')
     );
   }
+
   render() {
     let headerComp;
     headerComp = <HeaderWithoutSearch name={this.name} />;
-    
+
     return (
       <Layout className = "layout" >
         {headerComp}
@@ -69,7 +77,11 @@ export default class NewMenuView extends React.Component {
             </Col>
           </Row>
           <Divider orientation='left' >Images</Divider>
-          <ImageUploadButton max={4} />
+          <ImageUploadButton
+            max={4}
+            filelist={this.state.filelist}
+            onFilelistChange={this.handleFilelistChange}
+          />
           <Row justify="end" >
             <Button type='primary '>Save</Button>
             <Button onClick={() => {this.onClickCancel(this.name)}}>Cancel</Button>

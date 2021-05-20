@@ -12,6 +12,9 @@ function getBase64(file) {
 }
 
 export class ImageUploadButton extends React.Component {
+  /*
+   * Receives: max (optional), filelist, onFilelistChange as props
+   */
   constructor(props) {
     super(props);
     this.maxImages = props.max ?? 1;
@@ -19,7 +22,6 @@ export class ImageUploadButton extends React.Component {
       previewVisible: false,
       previewImage: '',
       previewTitle: '',
-      fileList: [],
     };
   }
 
@@ -37,21 +39,22 @@ export class ImageUploadButton extends React.Component {
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  handleChange = ({ fileList }) => {
+    this.props.onFilelistChange(fileList);
+  }
 
   beforeUpload = file => {
-    this.setState(state => ({
-      fileList: [...state.fileList, file],
-    }));
+    const newFilelist = this.props.filelist.concat([file]);
+    this.props.onFilelistChange(newFilelist);
     return false;
   }
 
   handleUpload = () => {
-    console.log(this.state.fileList)
+    console.log(this.props.filelist);
   }
 
   render() {
-    const { previewVisible, previewImage, fileList, previewTitle } = this.state;
+    const { previewVisible, previewImage, previewTitle } = this.state;
     const uploadButton = (
       <div>
         <PlusOutlined />
@@ -62,13 +65,13 @@ export class ImageUploadButton extends React.Component {
       <>
         <Upload
           listType="picture-card"
-          fileList={fileList}
+          fileList={this.props.filelist}
           onPreview={this.handlePreview}
           onChange={this.handleChange}
           beforeUpload={this.beforeUpload}
           visible={!previewVisible}
         >
-          {fileList.length >= 4 ? null : uploadButton}
+          {this.props.filelist.length >= 4 ? null : uploadButton}
         </Upload>
         <Modal
           visible={previewVisible}
