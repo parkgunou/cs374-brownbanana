@@ -1,6 +1,8 @@
-import { Layout, Skeleton, Tabs } from 'antd';
+import { Button, Layout, Skeleton, Tabs } from 'antd';
 import React from 'react';
+import ReactDom from 'react-dom';
 
+import NewMenuView from './NewMenuView';
 import MenuList from '../components/MenuList';
 import ProfileBio from '../components/ProfileBio';
 import ReviewList from '../components/ReviewList';
@@ -43,6 +45,15 @@ export default class ProfileView extends React.Component {
       .catch(error => console.log(error));
   }
 
+  onClickNewMenu(name) {
+    ReactDom.render(
+      <React.StrictMode>
+        <NewMenuView name={name} />
+      </React.StrictMode>,
+      document.getElementById('root')
+    );
+  }
+
   render() {
     const isLoaded = this.state.stylist?.name ? true : false;
     let headerComp, profileBioComp, stylesComp, reviewsComp, menusComp;
@@ -67,7 +78,12 @@ export default class ProfileView extends React.Component {
         {headerComp}
         {profileBioComp}
         <Content style={{ paddingLeft: '20%', paddingRight: '20%' }} >
-          <Tabs defaultActiveKey = "1" >
+          <Tabs
+            defaultActiveKey = "1"
+            tabBarExtraContent={
+              (<Button onClick={() => {this.onClickNewMenu(this.name)}} >Add new menu</Button>)
+            }
+          >
             <TabPane tab = "Styles" key = "1" >
               {stylesComp}
             </TabPane>

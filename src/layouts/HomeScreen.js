@@ -15,7 +15,7 @@ const { Content } = Layout;
 export default class HomeScreen extends React.Component {
   constructor() {
     super();
-    this.state = { "stylists": []};
+    this.state = { "stylists": [] };
   }
 
   componentDidMount() {
