@@ -4,37 +4,36 @@ import React from 'react';
 import ImageListItem from './ImageListItem';
 import { getFirebaseDB } from '../Firebase';
 
-const imageDes = [{
-    "style": "Swallow perm",
-    "description": "I am a girl",
-    "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-  },
-  {
-    "style": "Ash perm",
-    "description": "I am a girl",
-    "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-  },
-  {
-    "style": "Man haircut",
-    "description": "I am a girl",
-    "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-  },
-  {
-    "style": "Woman haircut",
-    "description": "I am a girl",
-    "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-  },
-  {
-    "style": "Woman perm",
-    "description": "I am a girl",
-    "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-  }
-];
+// const imageDes = [{
+//     "style": "Swallow perm",
+//     "description": "I am a girl",
+//     "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+//   },
+//   {
+//     "style": "Ash perm",
+//     "description": "I am a girl",
+//     "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+//   },
+//   {
+//     "style": "Man haircut",
+//     "description": "I am a girl",
+//     "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+//   },
+//   {
+//     "style": "Woman haircut",
+//     "description": "I am a girl",
+//     "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+//   },
+//   {
+//     "style": "Woman perm",
+//     "description": "I am a girl",
+//     "image_url": "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+//   }
+// ];
 
 export default class ImageList extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props)
     this.state = {
       "styles": [],
       "stylekeys": props.stylekeys
