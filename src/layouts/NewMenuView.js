@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { PlusOutlined } from '@ant-design/icons';
-import { Row, Col, Layout, Input, Upload, Typography, Divider, Button } from 'antd';
+import { Row, Col, Layout, Input, Typography, Divider, Button } from 'antd';
 
 import { HeaderWithoutSearch } from '../components/Header';
+import { ImageUploadButton } from '../components/ImageUploadButton';
 import ProfileView from './ProfileView';
 //import { getFirebaseDB } from '../Firebase';
 //import { Stylist } from '../models/Stylist';
@@ -30,15 +30,7 @@ export default class NewMenuView extends React.Component {
   render() {
     let headerComp;
     headerComp = <HeaderWithoutSearch name={this.name} />;
-
-    const fileList = [];
-    const uploadButton = (
-      <div>
-        <PlusOutlined />
-        <div style={{ marginTop: 8 }} >Upload</div>
-      </div>
-    )
-
+    
     return (
       <Layout className = "layout" >
         {headerComp}
@@ -77,12 +69,7 @@ export default class NewMenuView extends React.Component {
             </Col>
           </Row>
           <Divider orientation='left' >Images</Divider>
-          <Upload
-            listType='picture-card'
-            fileList={fileList}
-          >
-            {uploadButton}
-          </Upload>
+          <ImageUploadButton max={4} />
           <Row justify="end" >
             <Button type='primary '>Save</Button>
             <Button onClick={() => {this.onClickCancel(this.name)}}>Cancel</Button>

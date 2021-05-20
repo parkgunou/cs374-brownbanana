@@ -1,5 +1,5 @@
 import React from 'react';
-import { Upload, Modal, Button } from 'antd';
+import { Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 function getBase64(file) {
@@ -12,12 +12,16 @@ function getBase64(file) {
 }
 
 export class ImageUploadButton extends React.Component {
-  state = {
-    previewVisible: false,
-    previewImage: '',
-    previewTitle: '',
-    fileList: [],
-  };
+  constructor(props) {
+    super(props);
+    this.maxImages = props.max ?? 1;
+    this.state = {
+      previewVisible: false,
+      previewImage: '',
+      previewTitle: '',
+      fileList: [],
+    };
+  }
 
   handleCancel = () => this.setState({ previewVisible: false });
 
@@ -64,7 +68,7 @@ export class ImageUploadButton extends React.Component {
           beforeUpload={this.beforeUpload}
           visible={!previewVisible}
         >
-          {fileList.length >= 1 ? null : uploadButton}
+          {fileList.length >= 4 ? null : uploadButton}
         </Upload>
         <Modal
           visible={previewVisible}
@@ -74,13 +78,13 @@ export class ImageUploadButton extends React.Component {
         >
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
         </Modal>
-        <Button
+        {/* <Button
           type="primary"
           onClick={this.handleUpload}
           style={{ marginTop: 16 }}
         >
         Upload
-        </Button>
+        </Button> */}
       </>
     );
   }
