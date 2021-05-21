@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 
 let database;
+let storage;
 let config = {
   apiKey: "AIzaSyCRZFMkrCZuWnBKnMQ5liOe2iHZB_a5WpI",
   authDomain: "bb-hairshop.firebaseapp.com",
@@ -17,8 +18,16 @@ export const initFirebase = () => {
     firebase.initializeApp(config);
   }
   database = firebase.database();
+  storage = firebase.storage();
 }
 
 export const getFirebaseDB = (key='') => {
   return database.ref('/' + key);
+}
+
+export async function uploadImageFile(file) {
+  var snapshot = await storage.ref().child('images/'+file.name).put(file)
+  var downloadURL = await snapshot.ref.getDownloadURL()
+
+  return downloadURL
 }
