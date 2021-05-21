@@ -1,21 +1,20 @@
-import React, { Profiler } from 'react';
-import { Typography, Space, Row, Col } from 'antd';
-import { Input } from 'antd';
-import { Button } from 'antd';
-import { Upload, message } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { HeaderNoProfile, HeaderWithoutSearch } from '../components/Header';
+import React from 'react';
 import ReactDom from 'react-dom';
+import { Button, Col, Input, Layout, Row, Space, Typography } from 'antd';
+import { message } from 'antd';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+
+
+import { HeaderNoProfile } from '../components/Header';
 import ProfileView from './ProfileView';
-import '../css/CreateProfile.css';
-import Layout, { Content } from 'antd/lib/layout/layout';
 import { getFirebaseDB, uploadImageFile } from '../Firebase';
 import { Stylist } from '../models/Stylist';
 import { ImageUploadButton } from '../components/ImageUploadButton';
+import '../css/CreateProfile.css';
 
 
-const { Title, Text } = Typography;
-
+const { Text } = Typography;
+const { Content } = Layout;
 const { TextArea } = Input;
 
 function getBase64(img, callback) {
@@ -36,7 +35,7 @@ function beforeUpload(file) {
   return isJpgOrPng && isLt2M;
 }
 
-export default class CreateProfile extends React.Component {
+export default class EditProfile extends React.Component {
 
   constructor(props) {
     super(props);
@@ -54,6 +53,14 @@ export default class CreateProfile extends React.Component {
     this.onUpdateintro = this.onUpdateintro.bind(this);
     this.clickSave = this.clickSave.bind(this);
   }
+
+  /*
+   * TODO:
+   * 0. 해당 컴포넌트 로딩 될 때 props로 stylist 이름 받아오기 (ProfileBio.js에서 제대로 넣어주는지 확인하기)
+   * 1. componentDidMount 함수에서 스타일리스트 정보 가져와서 this.state에 채우기 (ProfileView.js 참조)
+   * 2. 로딩 후에 input 값을 기존 값으로 채워넣기 (ProfileView.js 부분 참조) (placeholder 말고 value로 넣기)
+   * 3. Save 시 db.push() 함수가 아닌 쿼리 후 업데이트 활용 (NewMenuView.js의 updateStylistMenu 함수 참조)
+   */
 
   handleFilelistChange(filelist) {
     this.setState({ profile_img_urls: filelist });
@@ -80,7 +87,7 @@ export default class CreateProfile extends React.Component {
         intro:this.state.intro,
         profile_img_url:""
       })
-      .then(result => {
+      .then(() => {
         ReactDom.render(
           <React.StrictMode>
             <ProfileView name={this.state.name} />
@@ -128,9 +135,10 @@ export default class CreateProfile extends React.Component {
           <Row className='createprofile-box'>
             <Col span={10}>
               <ImageUploadButton
+                max={1}
                 filelist={this.state.profile_img_urls}
                 onFilelistChange={this.handleFilelistChange}
-                />
+              />
             </Col>
             <Col span={2} />
             <Col span={12}>

@@ -71,7 +71,7 @@ export class ImageUploadButton extends React.Component {
           beforeUpload={this.beforeUpload}
           visible={!previewVisible}
         >
-          {this.props.filelist.length >= 4 ? null : uploadButton}
+          {this.props.filelist.length >= this.maxImages ? null : uploadButton}
         </Upload>
         <Modal
           visible={previewVisible}
