@@ -9,6 +9,7 @@ import ProfileView from './ProfileView';
 import SearchScreen from './SearchScreen';
 
 import '../css/HomeScreen.css';
+import CreateProfile from '../layouts/CreateProfile'
 
 const { Content } = Layout;
 
@@ -57,6 +58,15 @@ export default class HomeScreen extends React.Component {
     );
   }
 
+  onClickCreateProfile() {
+    ReactDom.render(
+      <React.StrictMode >
+        <CreateProfile />
+      </React.StrictMode>,
+      document.getElementById('root')
+    );
+  }
+
   render() {
     return (
       <Layout className="layout">
@@ -71,7 +81,13 @@ export default class HomeScreen extends React.Component {
               Search for stylist
             </Button>
             <Divider />
-            <Button className="navbutton" type="default" block>Create new profile</Button>
+            <Button 
+              className="navbutton" 
+              type="default" 
+              block
+              onClick={this.onClickCreateProfile}>
+              Create new profile
+            </Button>
             <Divider />
             {
               this.state.stylists.map(x => {

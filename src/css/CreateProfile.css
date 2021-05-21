@@ -1,0 +1,15 @@
+.createprofile-box {
+    padding: 16px;
+    background: white;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.createprofile-contents {
+    width: auto;
+}
+
+.Createprofile-uploader > .ant-upload {
+    width: 128px;
+    height: 128px;
+  }
