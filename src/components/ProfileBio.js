@@ -1,5 +1,7 @@
-import { Avatar, Col, Layout, Row, Space, Typography } from 'antd';
+import { Avatar, Button, Col, Layout, Row, Space, Typography } from 'antd';
 import React from 'react';
+import EditProfile from '../layouts/EditProfile'
+import ReactDom from 'react-dom';
 
 import '../css/Bio.css'
 
@@ -9,6 +11,8 @@ const { Paragraph, Text, Title } = Typography;
 export default class ProfileBio extends React.Component {
   constructor(props) {
     super(props);
+
+    console.log(props.stylist.profile_img_url)
 
     this.state = {
       name: props.stylist.name,
@@ -22,6 +26,15 @@ export default class ProfileBio extends React.Component {
 
   getRating() {
     return 4.58;
+  }
+
+  onClickEditProfile() {
+    ReactDom.render(
+      <React.StrictMode >
+        <EditProfile name={this.state.name} />
+      </React.StrictMode>,
+      document.getElementById('root')
+    );
   }
 
   render () {
@@ -48,6 +61,7 @@ export default class ProfileBio extends React.Component {
               <Paragraph ellipsis={{ rows: 3, expandable: true }}>
                 {this.state.information}
               </Paragraph>
+              <Button onClick={() => {this.onClickEditProfile(this.name)}}>Edit Profile</Button>
             </Space>
           </Col>
         </Row>

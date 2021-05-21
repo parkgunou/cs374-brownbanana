@@ -67,6 +67,15 @@ export default class HomeScreen extends React.Component {
     );
   }
 
+  onClickEditProfile() {
+    ReactDom.render(
+      <React.StrictMode >
+        <CreateProfile />
+      </React.StrictMode>,
+      document.getElementById('root')
+    );
+  }
+
   render() {
     return (
       <Layout className="layout">
