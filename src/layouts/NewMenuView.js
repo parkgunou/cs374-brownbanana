@@ -5,7 +5,7 @@ import { Row, Col, Layout, Input, Typography, Divider, Button } from 'antd';
 import { HeaderWithoutSearch } from '../components/Header';
 import { ImageUploadButton } from '../components/ImageUploadButton';
 import ProfileView from './ProfileView';
-import { getFirebaseDB } from '../Firebase';
+import { getFirebaseDB, uploadImageFile } from '../Firebase';
 
 const { Content } = Layout;
 const { TextArea } = Input;
@@ -18,13 +18,16 @@ export default class NewMenuView extends React.Component {
     this.state = {
       name: '',
       price: 0,
+      timeTaken: 0,
       description: '',
-      filelist: []
+      filelist: [],
+      saving: false,
     }
 
     this.handleFilelistChange = this.handleFilelistChange.bind(this);
     this.onUpdateName = this.onUpdateName.bind(this);
     this.onUpdatePrice = this.onUpdatePrice.bind(this);
+    this.onUpdateTimeTaken = this.onUpdateTimeTaken.bind(this);
     this.onUpdateDescription = this.onUpdateDescription.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
   }
@@ -37,22 +40,24 @@ export default class NewMenuView extends React.Component {
     this.setState({ name: name });
   }
 
-  onUpdatePrice(name) {
-    this.setState({ price: name });
+  onUpdatePrice(price) {
+    this.setState({ price: price });
   }
 
-  onUpdateDescription(name) {
-    this.setState({ description: name });
+  onUpdateTimeTaken(timeTaken) {
+    this.setState({ timeTaken: timeTaken });
+  }
+
+  onUpdateDescription(desc) {
+    this.setState({ description: desc });
+  }
+
+  enterSaving = () => {
+    this.setState({ saving: true });
   }
 
   onClickSave() {
-    /*
-     * TODO:
-     * 1. Save menu
-     * 2. Upload images and get URL
-     * 3. Use the menu key and URL to save styles
-     * 4. Update stylist info with style_keys and menu_keys
-     */
+    this.enterSaving();
 
     const stylistName = this.stylistName;
 
@@ -63,6 +68,20 @@ export default class NewMenuView extends React.Component {
 
       return newMenuRef.key;
     };
+
+    const filesToUrls = (filelist, urllist=[], callback) => {
+      if (filelist.length > 0) {
+        let file = filelist[0];
+        uploadImageFile(file)
+          .then(url => {
+            urllist.push(url);
+            filesToUrls(filelist.slice(1), urllist, callback);
+          })
+      }
+      else {
+        callback(urllist);
+      }
+    }
 
     const saveStyles = (menuKey, images) => {
       const styleDb = getFirebaseDB('styles');
@@ -78,7 +97,6 @@ export default class NewMenuView extends React.Component {
     };
 
     const updateStylistMenu = (menuKey, styleKeys) => {
-      console.log(stylistName);
       const stylistDb = getFirebaseDB('stylists');
       stylistDb.orderByChild('name').equalTo(stylistName)
         .limitToFirst(1)
@@ -88,27 +106,31 @@ export default class NewMenuView extends React.Component {
             return;
           }
           
-          const newMenuKeys = snapshot.val()["menu_keys"].concat([menuKey]);
-          const newStyleKeys = snapshot.val()["style_keys"].concat(styleKeys);
+          const newMenuKeys = (snapshot.val()["menu_keys"] ?? []).concat([menuKey]);
+          const newStyleKeys = (snapshot.val()["style_keys"] ?? []).concat(styleKeys);
 
           snapshot.ref.update({
             'menu_keys': newMenuKeys,
             'style_keys': newStyleKeys,
-          })
+          });
         });
     }
 
-    console.log(this.state);
+    filesToUrls(this.state.filelist, [], (urllist) => {
+      const newMenuKey = saveMenu({
+        'name': this.state.name,
+        'price': this.state.price,
+        'description': this.state.description,
+        'image_url': urllist[0],
+        'time_comsumed_mins': this.state.timeTaken,
+      });
 
-    const newMenuKey = saveMenu({
-      'name': this.state.name,
-      'price': this.state.price,
-      'description': this.state.description,
+      const newStyleKeys = saveStyles(newMenuKey, urllist);
+      updateStylistMenu(newMenuKey, newStyleKeys);
+
+      this.setState({ saving: false });
+      this.onClickCancel(stylistName);
     });
-
-    const imageURLs = this.state.filelist.map(file => file);
-    const newStyleKeys = saveStyles(newMenuKey, imageURLs);
-    updateStylistMenu(newMenuKey, newStyleKeys);
   }
 
   onClickCancel(name) {
@@ -158,6 +180,19 @@ export default class NewMenuView extends React.Component {
           </Row>
           <Row>
             <Col flex="250px" >
+              <Title level={4} >Time consumed</Title>
+            </Col>
+            <Col flex="auto" >
+              <Input
+                size='large'
+                type='number'
+                placeholder="Time consumed (minutes)"
+                onChange={(evt) => {this.onUpdatePrice(evt.target.valueAsNumber)}}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col flex="250px" >
               <Title level={4} >Information</Title>
             </Col>
             <Col flex="auto" >
@@ -174,7 +209,13 @@ export default class NewMenuView extends React.Component {
             onFilelistChange={this.handleFilelistChange}
           />
           <Row justify="end" >
-            <Button type='primary' onClick={this.onClickSave} >Save</Button>
+            <Button
+              type='primary'
+              loading={this.state.saving}
+              onClick={this.onClickSave}
+            >
+              Save
+            </Button>
             <Button onClick={() => {this.onClickCancel(this.stylistName)}} >Cancel</Button>
           </Row>
         </Content>
