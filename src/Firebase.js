@@ -26,7 +26,7 @@ export const getFirebaseDB = (key='') => {
 }
 
 export async function uploadImageFile(file) {
-  var snapshot = await storage.ref().child('images/'+file.name).put(file)
+  var snapshot = await storage.ref().child('images/'+file.name).put(file.originFileObj)
   var downloadURL = await snapshot.ref.getDownloadURL()
 
   return downloadURL
