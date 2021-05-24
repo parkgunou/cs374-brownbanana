@@ -96,7 +96,7 @@ export default class NewMenuView extends React.Component {
       return styleKeys;
     };
 
-    const updateStylistMenu = (menuKey, styleKeys) => {
+    const updateStylistMenu = (menuKey, styleKeys, callback) => {
       const stylistDb = getFirebaseDB('stylists');
       stylistDb.orderByChild('name').equalTo(stylistName)
         .limitToFirst(1)
@@ -112,7 +112,8 @@ export default class NewMenuView extends React.Component {
           snapshot.ref.update({
             'menu_keys': newMenuKeys,
             'style_keys': newStyleKeys,
-          });
+          },
+          callback);
         });
     }
 
@@ -126,10 +127,18 @@ export default class NewMenuView extends React.Component {
       });
 
       const newStyleKeys = saveStyles(newMenuKey, urllist);
-      updateStylistMenu(newMenuKey, newStyleKeys);
-
-      this.setState({ saving: false });
-      this.onClickCancel(stylistName);
+      updateStylistMenu(
+        newMenuKey,
+        newStyleKeys,
+        (error) => {
+          if (error) {
+            alert("update db failed");
+          }
+          else {
+            this.setState({ saving: false });
+            this.onClickCancel(stylistName);
+          }
+        });
     });
   }
 
@@ -187,7 +196,7 @@ export default class NewMenuView extends React.Component {
                 size='large'
                 type='number'
                 placeholder="Time consumed (minutes)"
-                onChange={(evt) => {this.onUpdatePrice(evt.target.valueAsNumber)}}
+                onChange={(evt) => {this.onUpdateTimeTaken(evt.target.valueAsNumber)}}
               />
             </Col>
           </Row>
