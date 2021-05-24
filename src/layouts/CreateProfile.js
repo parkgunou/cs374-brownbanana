@@ -1,10 +1,10 @@
-import React, { Profiler } from 'react';
+import React from 'react';
 import { Typography, Space, Row, Col } from 'antd';
 import { Input } from 'antd';
 import { Button } from 'antd';
 import { Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { HeaderNoProfile, HeaderWithoutSearch } from '../components/Header';
+import { HeaderNoProfile } from '../components/Header';
 import ReactDom from 'react-dom';
 import ProfileView from './ProfileView';
 import '../css/CreateProfile.css';
@@ -45,7 +45,10 @@ export default class CreateProfile extends React.Component {
       intro: '',
       name: '',
       salon: '',
-      profile_img_urls:[]
+      profile_img_urls:[],
+      menu_keys:[],
+      style_keys:[],
+      review_keys:[]
     }
 
     this.handleFilelistChange = this.handleFilelistChange.bind(this);
@@ -95,7 +98,7 @@ export default class CreateProfile extends React.Component {
             name:this.state.name,
             salon:this.state.salon,
             intro:this.state.intro,
-            profile_img_url:url
+            profile_img_url:url           
           })
           .then(result => {
             ReactDom.render(
@@ -127,10 +130,13 @@ export default class CreateProfile extends React.Component {
         <Content style={{ paddingLeft: '20%', paddingRight: '20%' }} >
           <Row className='createprofile-box'>
             <Col span={10}>
-              <ImageUploadButton
-                filelist={this.state.profile_img_urls}
-                onFilelistChange={this.handleFilelistChange}
-                />
+              <Space direction='vertical' className='createprofile-contents'>
+                <Text strong>Profile Image</Text>
+                <ImageUploadButton
+                  filelist={this.state.profile_img_urls}
+                  onFilelistChange={this.handleFilelistChange}
+                  />
+              </Space>
             </Col>
             <Col span={2} />
             <Col span={12}>

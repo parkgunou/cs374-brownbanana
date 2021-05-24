@@ -12,8 +12,6 @@ export default class ProfileBio extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log(props.stylist.profile_img_url)
-
     this.state = {
       name: props.stylist.name,
       image: props.stylist.profile_img_url, //URI
@@ -31,7 +29,12 @@ export default class ProfileBio extends React.Component {
   onClickEditProfile() {
     ReactDom.render(
       <React.StrictMode >
-        <EditProfile name={this.state.name} />
+        <EditProfile 
+          name={this.state.name}
+          intro={this.state.intro}
+          salon={this.state.salon}
+          profile_img_url={this.state.profile_img_url}
+        />
       </React.StrictMode>,
       document.getElementById('root')
     );

@@ -3,8 +3,6 @@ import ReactDom from 'react-dom';
 import { Button, Col, Input, Layout, Row, Space, Typography } from 'antd';
 import { message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-
-
 import { HeaderNoProfile } from '../components/Header';
 import ProfileView from './ProfileView';
 import { getFirebaseDB, uploadImageFile } from '../Firebase';
@@ -60,6 +58,8 @@ export default class EditProfile extends React.Component {
    * 1. componentDidMount 함수에서 스타일리스트 정보 가져와서 this.state에 채우기 (ProfileView.js 참조)
    * 2. 로딩 후에 input 값을 기존 값으로 채워넣기 (ProfileView.js 부분 참조) (placeholder 말고 value로 넣기)
    * 3. Save 시 db.push() 함수가 아닌 쿼리 후 업데이트 활용 (NewMenuView.js의 updateStylistMenu 함수 참조)
+   * header profile 있는걸로
+   * placeholder 말고 기존 value로
    */
 
   handleFilelistChange(filelist) {
@@ -117,6 +117,28 @@ export default class EditProfile extends React.Component {
     
   }
 
+  componentDidMount() {
+    getFirebaseDB('stylists')
+      .orderByChild('name').equalTo(this.stylistName)
+      .limitToFirst(1)
+      .once('value')
+      .then(snapshot => {
+        if (!snapshot.exists()) {
+          alert("No record in DB for profile");
+          return
+        }
+
+        var self = this;
+        snapshot.forEach( function(snap, index) {
+          const data = snap.val();
+          const stylist = new Stylist(data);
+          
+          self.setState({ "stylist": stylist });
+        })
+      })
+      .catch(error => console.log(error));
+  }
+
   render() {
     const { loading, imageUrl } = this.state;
     const uploadButton = (
@@ -134,6 +156,7 @@ export default class EditProfile extends React.Component {
         <Content style={{ paddingLeft: '20%', paddingRight: '20%' }} >
           <Row className='createprofile-box'>
             <Col span={10}>
+                <Text strong>Profile Image</Text>
               <ImageUploadButton
                 max={1}
                 filelist={this.state.profile_img_urls}
@@ -146,26 +169,24 @@ export default class EditProfile extends React.Component {
                 <Text strong>Name</Text>
                 <Input
                   size='large'
-                  placeholder="Your name"
+                  value={this.props.name}
                   onChange={(evt) => {
-                    console.log(evt)
                     this.onUpdateName(evt.target.value)
                   }}  
                 />
                 <Text strong>Current Workplace</Text>
                   <Input
                     size='large'                     
-                    placeholder="e.g) KAIST Hairshop"
+                    value={this.props.salon}
                     onChange={(evt) => {
-                      console.log(evt)
                       this.onUpdatesalon(evt.target.value)}}  
                   />
                 <Text strong>About me</Text>
                   <TextArea
                     size='large'
+                    value={this.props.intro}
                     showCount maxLength={500}
                     onChange={(evt) => {
-                      console.log(evt)
                       this.onUpdateintro(evt.target.value)}}  
                   />
                 <Button type="primary" onClick={() => this.clickSave()}>
