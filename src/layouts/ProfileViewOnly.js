@@ -5,7 +5,7 @@ import MenuList from '../components/MenuList';
 import ProfileBioNoEdit from '../components/ProfileBioNoEdit';
 import ReviewList from '../components/ReviewList';
 import ImageList from '../components/ImageList';
-import { HeaderNoProfile, HeaderWithoutSearch } from '../components/Header';
+import { HeaderNoProfile } from '../components/Header';
 import { getFirebaseDB } from '../Firebase';
 import { Stylist } from '../models/Stylist';
 
@@ -45,7 +45,7 @@ export default class ProfileViewOnly extends React.Component {
     const isLoaded = this.state.stylist?.name ? true : false;
     let headerComp, profileBioComp, stylesComp, reviewsComp, menusComp;
     if (isLoaded) {
-      headerComp = <HeaderWithoutSearch name={this.state.stylist.name} />;
+      headerComp = <HeaderNoProfile />;
       profileBioComp = <ProfileBioNoEdit stylist={this.state.stylist} />;
       stylesComp = <ImageList stylekeys={this.state.stylist.style_keys} />;
       reviewsComp = <ReviewList reviewkeys={this.state.stylist.review_keys} />;

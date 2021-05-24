@@ -18,14 +18,14 @@ export default class SearchScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      "stylists": []
+      "stylists": [],
+      "whole_stylists": []
     }
   }
 
   componentDidMount() {
     getFirebaseDB('stylists')
       .orderByKey()
-      .limitToFirst(4)
       .once('value')
       .then(snapshot => {
         if (!snapshot.exists()) {
@@ -41,9 +41,54 @@ export default class SearchScreen extends React.Component {
 
           stylists.push(stylist);
         })
-        self.setState({ "stylists": stylists });
+        self.setState({ 
+            "stylists": stylists,
+            "whole_stylists": stylists
+        });
       })
       .catch(error => console.log(error));
+  }
+
+  filterStylists(str){
+    var stylistslist = this.state.stylists;
+    if (str == "name") {
+      const input = document.getElementById("name_input");
+      if(input.value == ""){
+        this.setState({ 
+          "stylists": this.state.whole_stylists
+        });
+      }
+      else {
+        var filtered_list = [];
+        for (var i = 0; i < stylistslist.length; i++) {
+          if(stylistslist[i].name.toLowerCase().indexOf(input.value.toLowerCase()) != -1){
+            filtered_list.push(stylistslist[i]);
+          }
+        }
+        this.setState({"stylists": filtered_list});
+      }
+    }
+    else if (str == "salon") {
+      const input2 = document.getElementById("salon_input");
+      if(input2.value == ""){
+        this.setState({ 
+          "stylists": this.state.whole_stylists
+        });
+      }
+      else {
+        var filtered_list = [];
+        for (var i = 0; i < stylistslist.length; i++) {
+          if(stylistslist[i].salon.toLowerCase().indexOf(input2.value.toLowerCase()) != -1){
+            filtered_list.push(stylistslist[i]);
+          }
+        }
+        this.setState({"stylists": filtered_list});
+      }
+    }
+  }
+
+  onClickSearchAgain(){
+    console.log("search again!");
   }
 
   render() {
@@ -64,7 +109,7 @@ export default class SearchScreen extends React.Component {
                   message: "Enter stylist's name.."
                 }]
               } >
-              <Input placeholder = "Enter stylist's name.." />
+              <Input id= "name_input" onKeyUp= {() => {this.filterStylists("name")}} placeholder = "Enter stylist's name.." />
             </Form.Item>
             <Form.Item name = "style"
               label = "Style"
@@ -73,7 +118,7 @@ export default class SearchScreen extends React.Component {
                   message: "e.g.) volume magic perm"
                 }]
               } >
-              <Input placeholder = "e.g.) volume magic perm" />
+              <Input id = "style_input" placeholder = "e.g.) volume magic perm" />
             </Form.Item> 
             <Form.Item name = "salon"
               label = "Hairshop"
@@ -82,18 +127,19 @@ export default class SearchScreen extends React.Component {
                   message: "e.g.) Hongdae Hairshop"
                 }]
               } >
-              <Input placeholder = "e.g.) Hongdae" />
+              <Input id= "salon_input" onKeyUp= {() => {this.filterStylists("salon")}} placeholder = "e.g.) Hongdae Hairshop" />
             </Form.Item> 
             <Button type = "primary"
               htmlType = "submit"
-              id = "searchagain" >
+              id = "searchagain"
+              onClick= { () => {this.onClickSearchAgain()}}>
               Search Again ?
             </Button>  
             <style > @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap'); </style>
           </Form > 
         </Content >
         <Content className = "background" >
-          <div id = "searchResult" > Search Results </div>  
+          <div id = "searchResult" > Search Results </div>
           <List dataSource = { this.state.stylists }
             renderItem = {
               item => ( <

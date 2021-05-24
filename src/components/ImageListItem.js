@@ -9,12 +9,9 @@ export default class ImageListItem extends React.Component {
       <div id = "imagelist" >
         <Image
           className = "style-images"
-          width = { 200 }
+          width={200}
           src = { this.props.image_src }
         />
-        <div id = "imageDescription" >
-          { this.props.style }
-        </div>
       </div>
     );
   }
