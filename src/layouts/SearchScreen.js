@@ -50,10 +50,12 @@ export default class SearchScreen extends React.Component {
   }
 
   filterStylists(str){
-    var stylistslist = this.state.stylists;
-    if (str == "name") {
-      const input = document.getElementById("name_input");
-      if(input.value == ""){
+    var stylistslist = this.state.whole_stylists;
+    const input = document.getElementById("name_input");
+    const input1 = document.getElementById("style_input");
+    const input2 = document.getElementById("salon_input");
+    if (str === "name") {
+      if(input.value === "" && input1.value === "" && input2.value === ""){
         this.setState({ 
           "stylists": this.state.whole_stylists
         });
@@ -61,28 +63,27 @@ export default class SearchScreen extends React.Component {
       else {
         var filtered_list = [];
         for (var i = 0; i < stylistslist.length; i++) {
-          if(stylistslist[i].name.toLowerCase().indexOf(input.value.toLowerCase()) != -1){
+          if(stylistslist[i].name.toLowerCase().indexOf(input.value.toLowerCase()) !== -1){
             filtered_list.push(stylistslist[i]);
           }
         }
         this.setState({"stylists": filtered_list});
       }
     }
-    else if (str == "salon") {
-      const input2 = document.getElementById("salon_input");
-      if(input2.value == ""){
+    else if (str === "salon") {
+      if(input.value === "" && input1.value === "" && input2.value === ""){
         this.setState({ 
           "stylists": this.state.whole_stylists
         });
       }
       else {
-        var filtered_list = [];
-        for (var i = 0; i < stylistslist.length; i++) {
-          if(stylistslist[i].salon.toLowerCase().indexOf(input2.value.toLowerCase()) != -1){
-            filtered_list.push(stylistslist[i]);
+        var filtered_list1 = [];
+        for (var j = 0; j < stylistslist.length; j++) {
+          if(stylistslist[j].salon.toLowerCase().indexOf(input2.value.toLowerCase()) !== -1){
+            filtered_list1.push(stylistslist[j]);
           }
         }
-        this.setState({"stylists": filtered_list});
+        this.setState({"stylists": filtered_list1});
       }
     }
   }
