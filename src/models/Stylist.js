@@ -1,7 +1,8 @@
 
 export class Stylist {
     
-    constructor(json) {
+    constructor(key, json) {
+        this.key = key
         this.name = json.name
         this.salon = json.salon
         this.intro = json.intro

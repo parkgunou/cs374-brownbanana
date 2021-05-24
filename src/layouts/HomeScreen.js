@@ -32,7 +32,7 @@ export default class HomeScreen extends React.Component {
 
         let stylistNames = [];
         snapshot.forEach((snap, index) => {
-          const stylist = new Stylist(snap.val());
+          const stylist = new Stylist(snap.key, snap.val());
           stylistNames.push(stylist.name);
         });
         this.setState({ "stylists": stylistNames });

@@ -1,40 +1,18 @@
-import React, { Profiler } from 'react';
+import React from 'react';
 import { Typography, Space, Row, Col } from 'antd';
 import { Input } from 'antd';
 import { Button } from 'antd';
-import { Upload, message } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { HeaderNoProfile, HeaderWithoutSearch } from '../components/Header';
+import { HeaderNoProfile } from '../components/Header';
 import ReactDom from 'react-dom';
 import ProfileView from './ProfileView';
 import '../css/CreateProfile.css';
 import Layout, { Content } from 'antd/lib/layout/layout';
 import { getFirebaseDB, uploadImageFile } from '../Firebase';
-import { Stylist } from '../models/Stylist';
 import { ImageUploadButton } from '../components/ImageUploadButton';
 
 
-const { Title, Text } = Typography;
-
+const { Text } = Typography;
 const { TextArea } = Input;
-
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
-
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
-}
 
 export default class CreateProfile extends React.Component {
 
@@ -45,7 +23,10 @@ export default class CreateProfile extends React.Component {
       intro: '',
       name: '',
       salon: '',
-      profile_img_urls:[]
+      profile_img_urls:[],
+      menu_keys:[],
+      style_keys:[],
+      review_keys:[]
     }
 
     this.handleFilelistChange = this.handleFilelistChange.bind(this);
@@ -73,7 +54,7 @@ export default class CreateProfile extends React.Component {
 
   clickSave() {
     var newStylistRef = getFirebaseDB('stylists').push()
-    if (this.state.profile_img_urls.length == 0) {
+    if (this.state.profile_img_urls.length === 0) {
       newStylistRef.set({
         name:this.state.name,
         salon:this.state.salon,
@@ -95,7 +76,7 @@ export default class CreateProfile extends React.Component {
             name:this.state.name,
             salon:this.state.salon,
             intro:this.state.intro,
-            profile_img_url:url
+            profile_img_url:url           
           })
           .then(result => {
             ReactDom.render(
@@ -111,28 +92,23 @@ export default class CreateProfile extends React.Component {
   }
 
   render() {
-    const { loading, imageUrl } = this.state;
-    const uploadButton = (
-      <div>
-        {loading ? <LoadingOutlined /> : <PlusOutlined />}
-        <div style={{ marginTop: 8 }}>Upload</div>
-      </div>
-    );
     
-    const { loadings } = this.state;
-
     return (
       <Layout className = "layout" >
         <HeaderNoProfile/>
         <Content style={{ paddingLeft: '20%', paddingRight: '20%' }} >
           <Row className='createprofile-box'>
-            <Col span={10}>
-              <ImageUploadButton
-                filelist={this.state.profile_img_urls}
-                onFilelistChange={this.handleFilelistChange}
-                />
+            <Col span={3} />
+            <Col span={5}>
+              <Space direction='vertical' className='createprofile-contents'>
+                <Text strong>Profile Image</Text>
+                <ImageUploadButton
+                  filelist={this.state.profile_img_urls}
+                  onFilelistChange={this.handleFilelistChange}
+                  />
+              </Space>
             </Col>
-            <Col span={2} />
+            <Col span={3} />
             <Col span={12}>
               <Space direction='vertical' className='createprofile-contents'>
                 <Text strong>Name</Text>
