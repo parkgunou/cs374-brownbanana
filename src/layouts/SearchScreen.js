@@ -1,8 +1,8 @@
-import { Layout, Form, Input, Slider, Button, List } from 'antd';
+import { Layout, Form, Input, Button, List } from 'antd';
 import React from 'react';
 
 import { getFirebaseDB } from '../Firebase';
-import { HeaderWithSearch } from '../components/Header';
+import { HeaderNoProfile } from '../components/Header';
 import { Stylist } from '../models/Stylist';
 import SearchListItem from '../components/SearchListItem';
 import '../css/SearchScreen.css';
@@ -25,7 +25,7 @@ export default class SearchScreen extends React.Component {
   componentDidMount() {
     getFirebaseDB('stylists')
       .orderByKey()
-      .limitToFirst(1)
+      .limitToFirst(4)
       .once('value')
       .then(snapshot => {
         if (!snapshot.exists()) {
@@ -49,14 +49,23 @@ export default class SearchScreen extends React.Component {
   render() {
     return ( 
       <Layout className = 'layout' >
-        <span id = "headerwithsearch" >
-          <HeaderWithSearch />
+        <span id = "header-no-profile" >
+          <HeaderNoProfile />
         </span> 
         <Content className = "background" >
           <div id = "searchFilter" > Filters </div> 
           <Form {...formItemLayout }
             name = "search_form"
             className = "search_forms" >
+            <Form.Item name = "stylist-name"
+              label = "Name"
+              rules = {
+                [{
+                  message: "Enter stylist's name.."
+                }]
+              } >
+              <Input placeholder = "Enter stylist's name.." />
+            </Form.Item>
             <Form.Item name = "style"
               label = "Style"
               rules = {
@@ -66,29 +75,15 @@ export default class SearchScreen extends React.Component {
               } >
               <Input placeholder = "e.g.) volume magic perm" />
             </Form.Item> 
-            <Form.Item name = "location"
-              label = "Location"
+            <Form.Item name = "salon"
+              label = "Hairshop"
               rules = {
                 [{
-                  message: "e.g.) Hongdae"
+                  message: "e.g.) Hongdae Hairshop"
                 }]
               } >
               <Input placeholder = "e.g.) Hongdae" />
             </Form.Item> 
-            <Form.Item name = "price"
-              label = "Price Range" >
-              <Slider min = { 0 }
-                max = { 300000 }
-                step = { 1000 }
-                marks = {
-                  {
-                    0: '₩0',
-                    50000: '₩50,000',
-                    150000: '₩150,000',
-                    300000: '₩300,000'
-                  }
-                } /> 
-            </Form.Item >
             <Button type = "primary"
               htmlType = "submit"
               id = "searchagain" >
