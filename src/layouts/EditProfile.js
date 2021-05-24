@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import { Button, Col, Input, Layout, Row, Space, Typography } from 'antd';
-import { message } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { HeaderWithoutSearch } from '../components/Header';
 import ProfileView from './ProfileView';
 import { getFirebaseDB, uploadImageFile } from '../Firebase';
@@ -10,35 +8,16 @@ import { Stylist } from '../models/Stylist';
 import { ImageUploadButton } from '../components/ImageUploadButton';
 import '../css/CreateProfile.css';
 
-
 const { Text } = Typography;
 const { Content } = Layout;
 const { TextArea } = Input;
-
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
-
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
-}
 
 export default class EditProfile extends React.Component {
 
   constructor(props) {
     super(props);
     this.stylist = props.stylist;
-    this.imageList = this.stylist.profile_img_url != "" ? [{
+    this.imageList = this.stylist.profile_img_url !== "" ? [{
       uid: '-1',
       name: 'image.png',
       status: 'done',
@@ -59,16 +38,6 @@ export default class EditProfile extends React.Component {
     this.clickSave = this.clickSave.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
   }
-
-  /*
-   * TODO:
-   * 0. 해당 컴포넌트 로딩 될 때 props로 stylist 이름 받아오기 (ProfileBio.js에서 제대로 넣어주는지 확인하기)
-   * 1. componentDidMount 함수에서 스타일리스트 정보 가져와서 this.state에 채우기 (ProfileView.js 참조)
-   * 2. 로딩 후에 input 값을 기존 값으로 채워넣기 (ProfileView.js 부분 참조) (placeholder 말고 value로 넣기)
-   * 3. Save 시 db.push() 함수가 아닌 쿼리 후 업데이트 활용 (NewMenuView.js의 updateStylistMenu 함수 참조)
-   * header profile 있는걸로
-   * placeholder 말고 기존 value로
-   */
 
   handleFilelistChange(filelist) {
     this.setState({ 
@@ -163,7 +132,8 @@ export default class EditProfile extends React.Component {
         <HeaderWithoutSearch/>
         <Content style={{ paddingLeft: '20%', paddingRight: '20%' }} >
           <Row className='createprofile-box'>
-            <Col span={10}>
+            <Col span={3} />
+            <Col span={5}>
                 <Text strong>Profile Image</Text>
               <ImageUploadButton
                 max={1}
@@ -171,7 +141,7 @@ export default class EditProfile extends React.Component {
                 onFilelistChange={this.handleFilelistChange}
               />
             </Col>
-            <Col span={2} />
+            <Col span={3} />
             <Col span={12}>
               <Space direction='vertical' className='createprofile-contents'>
                 <Text strong>Name</Text>
