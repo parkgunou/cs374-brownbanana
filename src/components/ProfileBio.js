@@ -4,6 +4,7 @@ import EditProfile from '../layouts/EditProfile'
 import ReactDom from 'react-dom';
 
 import '../css/Bio.css'
+import { NotificationButton } from './NotificationButton';
 
 const { Content } = Layout;
 const { Paragraph, Text, Title } = Typography;
@@ -19,7 +20,7 @@ export default class ProfileBio extends React.Component {
       image: props.stylist.profile_img_url, //URI
       location: props.stylist.salon,
       reviews: props.stylist.review_keys,
-      follwerCount: 42,
+      followerCount: 42,
       information: props.stylist.intro,
     }
   }
@@ -55,13 +56,16 @@ export default class ProfileBio extends React.Component {
               <Text type="secondary">{this.state.location}</Text>
               <div>
                 <Text className="spannedline" >Reviews <b>{this.state.reviews.length}</b></Text>
-                <Text className="spannedline" >Followers <b>{this.state.follwerCount}</b></Text>
+                <Text className="spannedline" >Followers <b>{this.state.followerCount}</b></Text>
                 <Text className="spannedline" >Rating <b>{this.getRating()}</b></Text>
               </div>
               <Paragraph ellipsis={{ rows: 3, expandable: true }}>
                 {this.state.information}
               </Paragraph>
-              <Button onClick={() => {this.onClickEditProfile(this.name)}}>Edit Profile</Button>
+              <Space direction="horizontal">
+                <Button onClick={() => {this.onClickEditProfile(this.name)}}>Edit Profile</Button>
+                <NotificationButton followerCount={this.state.followerCount} />
+              </Space>
             </Space>
           </Col>
         </Row>
