@@ -50,7 +50,7 @@ export default class SearchScreen extends React.Component {
   }
 
   filterStylists(str){
-    var stylistslist = this.state.whole_stylists;
+    var stylistslist = this.state.stylists;
     const input = document.getElementById("name_input");
     const input1 = document.getElementById("style_input");
     const input2 = document.getElementById("salon_input");
@@ -89,7 +89,8 @@ export default class SearchScreen extends React.Component {
   }
 
   onClickSearchAgain(){
-    console.log("search again!");
+    document.getElementById("search_form").reset();
+    this.setState({ "stylists": this.state.whole_stylists });
   }
 
   render() {
