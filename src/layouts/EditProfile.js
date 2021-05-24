@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 import { Button, Col, Input, Layout, Row, Space, Typography } from 'antd';
 import { message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { HeaderNoProfile } from '../components/Header';
+import { HeaderWithoutSearch } from '../components/Header';
 import ProfileView from './ProfileView';
 import { getFirebaseDB, uploadImageFile } from '../Firebase';
 import { Stylist } from '../models/Stylist';
@@ -37,19 +37,22 @@ export default class EditProfile extends React.Component {
 
   constructor(props) {
     super(props);
-    this.stylistName = props.name;
+    this.stylist = props.stylist;
     this.state = {
-      intro: '',
-      name: '',
-      salon: '',
-      profile_img_urls:[]
+      intro: this.stylist.intro,
+      name: this.stylist.name,
+      salon: this.stylist.salon,
+      profile_img_urls:[this.stylist.profile_img_url]
     }
+
+    console.log(this.state.profile_img_urls)
 
     this.handleFilelistChange = this.handleFilelistChange.bind(this);
     this.onUpdateName = this.onUpdateName.bind(this);
     this.onUpdatesalon = this.onUpdatesalon.bind(this);
     this.onUpdateintro = this.onUpdateintro.bind(this);
     this.clickSave = this.clickSave.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   /*
@@ -79,47 +82,30 @@ export default class EditProfile extends React.Component {
   }
 
   clickSave() {
-    var newStylistRef = getFirebaseDB('stylists').push()
-    if (this.state.profile_img_urls.length == 0) {
-      newStylistRef.set({
+    getFirebaseDB('stylists/'+this.stylist.key).set({
         name:this.state.name,
         salon:this.state.salon,
         intro:this.state.intro,
-        profile_img_url:""
-      })
-      .then(() => {
-        ReactDom.render(
-          <React.StrictMode>
-            <ProfileView name={this.state.name} />
-          </React.StrictMode>,
-          document.getElementById('root')
-        );
-      })
-    } else {
-      uploadImageFile(this.state.profile_img_urls[0])
-        .then(url => {
-          newStylistRef.set({
-            name:this.state.name,
-            salon:this.state.salon,
-            intro:this.state.intro,
-            profile_img_url:url
-          })
-          .then(result => {
+        profile_img_url:this.stylist.profile_img_url,
+        created_at:this.stylist.created_at,
+        menu_keys:this.stylist.menu_keys,
+        review_keys:this.stylist.review_keys,
+        style_keys:this.stylist.style_keys
+    })
+    .then(result => {
             ReactDom.render(
               <React.StrictMode>
                 <ProfileView name={this.state.name} />
               </React.StrictMode>,
               document.getElementById('root')
             );
-          })
         })
     }
     
-  }
 
   componentDidMount() {
     getFirebaseDB('stylists')
-      .orderByChild('name').equalTo(this.stylistName)
+      .orderByChild('name').equalTo(this.stylist.name)
       .limitToFirst(1)
       .once('value')
       .then(snapshot => {
@@ -131,7 +117,7 @@ export default class EditProfile extends React.Component {
         var self = this;
         snapshot.forEach( function(snap, index) {
           const data = snap.val();
-          const stylist = new Stylist(data);
+          const stylist = new Stylist(snap.key, data);
           
           self.setState({ "stylist": stylist });
         })
@@ -152,7 +138,7 @@ export default class EditProfile extends React.Component {
 
     return (
       <Layout className = "layout" >
-        <HeaderNoProfile/>
+        <HeaderWithoutSearch/>
         <Content style={{ paddingLeft: '20%', paddingRight: '20%' }} >
           <Row className='createprofile-box'>
             <Col span={10}>
@@ -169,7 +155,7 @@ export default class EditProfile extends React.Component {
                 <Text strong>Name</Text>
                 <Input
                   size='large'
-                  value={this.props.name}
+                  value={this.state.name}
                   onChange={(evt) => {
                     this.onUpdateName(evt.target.value)
                   }}  
@@ -177,14 +163,14 @@ export default class EditProfile extends React.Component {
                 <Text strong>Current Workplace</Text>
                   <Input
                     size='large'                     
-                    value={this.props.salon}
+                    value={this.state.salon}
                     onChange={(evt) => {
                       this.onUpdatesalon(evt.target.value)}}  
                   />
                 <Text strong>About me</Text>
                   <TextArea
                     size='large'
-                    value={this.props.intro}
+                    value={this.state.intro}
                     showCount maxLength={500}
                     onChange={(evt) => {
                       this.onUpdateintro(evt.target.value)}}  

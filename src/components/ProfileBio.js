@@ -21,6 +21,7 @@ export default class ProfileBio extends React.Component {
       followerCount: 42,
       information: props.stylist.intro,
     }
+    this.onClickEditProfile = this.onClickEditProfile.bind(this);
   }
 
   getRating() {
@@ -31,10 +32,7 @@ export default class ProfileBio extends React.Component {
     ReactDom.render(
       <React.StrictMode >
         <EditProfile 
-          name={this.state.name}
-          intro={this.state.intro}
-          salon={this.state.salon}
-          profile_img_url={this.state.profile_img_url}
+          stylist={this.props.stylist}
         />
       </React.StrictMode>,
       document.getElementById('root')
