@@ -38,14 +38,19 @@ export default class EditProfile extends React.Component {
   constructor(props) {
     super(props);
     this.stylist = props.stylist;
+    this.imageList = this.stylist.profile_img_url != "" ? [{
+      uid: '-1',
+      name: 'image.png',
+      status: 'done',
+      url: this.stylist.profile_img_url,
+    }] : []
     this.state = {
       intro: this.stylist.intro,
       name: this.stylist.name,
       salon: this.stylist.salon,
-      profile_img_urls:[this.stylist.profile_img_url]
+      profile_img_urls: this.imageList,
+      img_changed: false
     }
-
-    console.log(this.state.profile_img_urls)
 
     this.handleFilelistChange = this.handleFilelistChange.bind(this);
     this.onUpdateName = this.onUpdateName.bind(this);
@@ -66,7 +71,10 @@ export default class EditProfile extends React.Component {
    */
 
   handleFilelistChange(filelist) {
-    this.setState({ profile_img_urls: filelist });
+    this.setState({ 
+      profile_img_urls: filelist,
+      img_changed: true
+    });
   }
 
   onUpdateName(name) {
@@ -82,7 +90,30 @@ export default class EditProfile extends React.Component {
   }
 
   clickSave() {
-    getFirebaseDB('stylists/'+this.stylist.key).set({
+    if (this.state.img_changed) {
+      uploadImageFile(this.state.profile_img_urls[0])
+        .then(url => {
+          getFirebaseDB('stylists/'+this.stylist.key).set({
+            name:this.state.name,
+            salon:this.state.salon,
+            intro:this.state.intro,
+            profile_img_url:url,
+            created_at:this.stylist.created_at,
+            menu_keys:this.stylist.menu_keys,
+            review_keys:this.stylist.review_keys,
+            style_keys:this.stylist.style_keys
+          })
+          .then(result => {
+            ReactDom.render(
+              <React.StrictMode>
+                <ProfileView name={this.state.name} />
+              </React.StrictMode>,
+              document.getElementById('root')
+            );
+          })
+        })
+    } else {
+      getFirebaseDB('stylists/'+this.stylist.key).set({
         name:this.state.name,
         salon:this.state.salon,
         intro:this.state.intro,
@@ -91,16 +122,17 @@ export default class EditProfile extends React.Component {
         menu_keys:this.stylist.menu_keys,
         review_keys:this.stylist.review_keys,
         style_keys:this.stylist.style_keys
-    })
-    .then(result => {
-            ReactDom.render(
-              <React.StrictMode>
-                <ProfileView name={this.state.name} />
-              </React.StrictMode>,
-              document.getElementById('root')
-            );
-        })
+      })
+      .then(result => {
+        ReactDom.render(
+          <React.StrictMode>
+            <ProfileView name={this.state.name} />
+          </React.StrictMode>,
+          document.getElementById('root')
+        );
+      })
     }
+  }
     
 
   componentDidMount() {
@@ -126,16 +158,6 @@ export default class EditProfile extends React.Component {
   }
 
   render() {
-    const { loading, imageUrl } = this.state;
-    const uploadButton = (
-      <div>
-        {loading ? <LoadingOutlined /> : <PlusOutlined />}
-        <div style={{ marginTop: 8 }}>Upload</div>
-      </div>
-    );
-    
-    const { loadings } = this.state;
-
     return (
       <Layout className = "layout" >
         <HeaderWithoutSearch/>
