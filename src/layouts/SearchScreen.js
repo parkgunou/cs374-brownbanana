@@ -37,7 +37,7 @@ export default class SearchScreen extends React.Component {
         var stylists = [];
         snapshot.forEach(function(snap, index) {
           const data = snap.val();
-          const stylist = new Stylist(data);
+          const stylist = new Stylist(snap.key, data);
 
           stylists.push(stylist);
         })
