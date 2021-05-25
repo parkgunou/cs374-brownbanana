@@ -4,6 +4,7 @@ import React from 'react';
 import { getFirebaseDB } from '../Firebase';
 import { HeaderNoProfile } from '../components/Header';
 import { Stylist } from '../models/Stylist';
+import { Menus } from '../models/Menus';
 import SearchListItem from '../components/SearchListItem';
 import '../css/SearchScreen.css';
 
@@ -19,7 +20,8 @@ export default class SearchScreen extends React.Component {
     super(props)
     this.state = {
       "stylists": [],
-      "whole_stylists": []
+      "whole_stylists": [],
+      "menus": {}
     }
   }
 
@@ -44,6 +46,28 @@ export default class SearchScreen extends React.Component {
         self.setState({ 
             "stylists": stylists,
             "whole_stylists": stylists
+        });
+      })
+      .catch(error => console.log(error));
+    getFirebaseDB('menus')
+      .orderByKey()
+      .once('value')
+      .then(snapshot => {
+        if (!snapshot.exists()) {
+          alert("No record in DB for menus");
+          return
+        }
+
+        var self = this;
+        var menus = {};
+        snapshot.forEach(function(snap, index) {
+          const data = snap.val();
+          const menu = new Menus(snap.key, data);
+
+          menus[snap.key] = menu;
+        })
+        self.setState({ 
+            "menus": menus
         });
       })
       .catch(error => console.log(error));
@@ -86,6 +110,30 @@ export default class SearchScreen extends React.Component {
         this.setState({"stylists": filtered_list1});
       }
     }
+    else {
+      if(input.value === "" && input1.value === "" && input2.value === ""){
+        this.setState({ 
+          "stylists": this.state.whole_stylists
+        });
+      }
+      else {
+        var filtered_list2 = [];
+        var menus = this.state.menus;
+        for (var n = 0; n < stylistslist.length; n++) {
+          var menu_keys = stylistslist[n].menu_keys;
+          for (var k = 0; k < menu_keys.length; k++){
+            var keys = Object.keys(menus);
+            if(keys.includes(menu_keys[k])){
+              if(menus[menu_keys[k]].name.toLowerCase().indexOf(input1.value.toLowerCase()) !== -1){
+                filtered_list2.push(stylistslist[n]);
+                break;
+              }
+            }
+          }
+        }
+        this.setState({"stylists": filtered_list2});
+      }
+    }
   }
 
   onClickSearchAgain(){
@@ -120,7 +168,7 @@ export default class SearchScreen extends React.Component {
                   message: "e.g.) volume magic perm"
                 }]
               } >
-              <Input id = "style_input" placeholder = "e.g.) volume magic perm" />
+              <Input id = "style_input" onKeyUp= {() => {this.filterStylists("style")}} placeholder = "e.g.) volume magic perm" />
             </Form.Item> 
             <Form.Item name = "salon"
               label = "Hairshop"
