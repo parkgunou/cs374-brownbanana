@@ -1,6 +1,6 @@
 # Brown Banana: High-fidelity prototype (DP4)
 
-You can access the prototype on our [Github Pages](https://parkgunou.github.io/cs374-brownbanana)!
+You can access the prototype on [our Github Pages](https://parkgunou.github.io/cs374-brownbanana)!
 
 ## Frameworks and external packages used
 
@@ -14,7 +14,7 @@ We are also making use of [Github Pages](https://pages.github.com/) to host our 
 
 ## Code structure
 
-The main entrypoint of our project is through [index.js](src/index.js), which directly renders our [HomeScreen](layouts/HomeScreen.js).
+The main entrypoint of our project is through [index.js](src/index.js), which directly renders our [HomeScreen](src/layouts/HomeScreen.js).
 
 Our project is mainly divided into three distinct parts, grouped by the directories.
 * `layouts/` contain the page-level html that should be rendered as a whole.
