@@ -107,7 +107,9 @@ We will take turns in being facilitator, observer or technician, so that we migh
 
 ## Questionnaires, Interview questions
 
-1. When creating a new profile, do you think the information you typed in (name, workspace, about me) will be enough to express yourself? If not, what more information do you think should be given?2. When creating a new profile, is there any UI design (color, alignments, buttons, etc.) that you liked or disliked?	
+1. When creating a new profile, do you think the information you typed in (name, workspace, about me) will be enough to express yourself? If not, what more information do you think should be given?
+
+2. When creating a new profile, is there any UI design (color, alignments, buttons, etc.) that you liked or disliked?	
 
    2 - 1. If you liked a certain feature, why did you like it?	
 
