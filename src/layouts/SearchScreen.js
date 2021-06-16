@@ -21,7 +21,10 @@ export default class SearchScreen extends React.Component {
     this.state = {
       "stylists": [],
       "whole_stylists": [],
-      "menus": {}
+      "menus": {},
+      "name": "",
+      "style": "",
+      "hairshop": "",
     }
   }
 
@@ -73,67 +76,61 @@ export default class SearchScreen extends React.Component {
       .catch(error => console.log(error));
   }
 
-  filterStylists(str){
-    var stylistslist = this.state.stylists;
-    const input = document.getElementById("name_input");
-    const input1 = document.getElementById("style_input");
-    const input2 = document.getElementById("salon_input");
-    if (str === "name") {
-      if(input.value === "" && input1.value === "" && input2.value === ""){
-        this.setState({ 
-          "stylists": this.state.whole_stylists
-        });
-      }
-      else {
-        var filtered_list = [];
-        for (var i = 0; i < stylistslist.length; i++) {
-          if(stylistslist[i].name.toLowerCase().indexOf(input.value.toLowerCase()) !== -1){
-            filtered_list.push(stylistslist[i]);
-          }
-        }
-        this.setState({"stylists": filtered_list});
-      }
+  onUpdateName(name) {
+    this.setState(
+      { name: name },
+      this.filterStylists
+    );
+  }
+
+  onUpdateStyle(style) {
+    this.setState(
+      { style: style },
+      this.filterStylists
+    );
+  }
+
+  onUpdateHairshop(hairshop) {
+    this.setState(
+      { hairshop: hairshop },
+      this.filterStylists
+    );
+  }
+
+  filterStylists() {
+    let currentStylists = this.state.whole_stylists;
+
+    // filter by name
+    if (this.state.name) {
+      currentStylists = currentStylists.filter(s => {
+        return s.name.toLowerCase().includes(this.state.name.toLowerCase());
+      });
     }
-    else if (str === "salon") {
-      if(input.value === "" && input1.value === "" && input2.value === ""){
-        this.setState({ 
-          "stylists": this.state.whole_stylists
+
+    // filter by style
+    if (this.state.style) {
+    const styleFilteredStylists = [];
+      currentStylists.forEach(s => {
+        const hasMenu = s.menu_keys.some(k => {
+          return this.state.menus[k].name.toLowerCase().includes(this.state.style.toLowerCase());
         });
-      }
-      else {
-        var filtered_list1 = [];
-        for (var j = 0; j < stylistslist.length; j++) {
-          if(stylistslist[j].salon.toLowerCase().indexOf(input2.value.toLowerCase()) !== -1){
-            filtered_list1.push(stylistslist[j]);
-          }
+        if (hasMenu) {
+          styleFilteredStylists.push(s);
         }
-        this.setState({"stylists": filtered_list1});
-      }
+      });
+      currentStylists = styleFilteredStylists;
     }
-    else {
-      if(input.value === "" && input1.value === "" && input2.value === ""){
-        this.setState({ 
-          "stylists": this.state.whole_stylists
-        });
-      }
-      else {
-        var filtered_list2 = [];
-        var menus = this.state.menus;
-        for (var n = 0; n < stylistslist.length; n++) {
-          var menu_keys = stylistslist[n].menu_keys;
-          for (var k = 0; k < menu_keys.length; k++){
-            var keys = Object.keys(menus);
-            if(keys.includes(menu_keys[k])){
-              if(menus[menu_keys[k]].name.toLowerCase().indexOf(input1.value.toLowerCase()) !== -1){
-                filtered_list2.push(stylistslist[n]);
-                break;
-              }
-            }
-          }
-        }
-        this.setState({"stylists": filtered_list2});
-      }
+
+    // filter by salon
+    if (this.state.hairshop) {
+      currentStylists = currentStylists.filter(s => {
+        return s.salon.toLowerCase().includes(this.state.hairshop.toLowerCase());
+      });
     }
+
+    this.setState({
+      "stylists": currentStylists
+    });
   }
 
   onClickSearchAgain(){
@@ -159,7 +156,10 @@ export default class SearchScreen extends React.Component {
                   message: "Enter stylist's name.."
                 }]
               } >
-              <Input id= "name_input" onKeyUp= {() => {this.filterStylists("name")}} placeholder = "Enter stylist's name.." />
+              <Input
+                id= "name_input"
+                onChange= {(evt) => {this.onUpdateName(evt.target.value)}}
+                placeholder = "Enter stylist's name.." />
             </Form.Item>
             <Form.Item name = "style"
               label = "Style"
@@ -168,7 +168,10 @@ export default class SearchScreen extends React.Component {
                   message: "e.g.) volume magic perm"
                 }]
               } >
-              <Input id = "style_input" onKeyUp= {() => {this.filterStylists("style")}} placeholder = "e.g.) volume magic perm" />
+              <Input
+                id = "style_input"
+                onChange= {(evt) => {this.onUpdateStyle(evt.target.value)}}
+                placeholder = "e.g.) volume magic perm" />
             </Form.Item> 
             <Form.Item name = "salon"
               label = "Hairshop"
@@ -177,13 +180,16 @@ export default class SearchScreen extends React.Component {
                   message: "e.g.) Hongdae Hairshop"
                 }]
               } >
-              <Input id= "salon_input" onKeyUp= {() => {this.filterStylists("salon")}} placeholder = "e.g.) Hongdae Hairshop" />
+              <Input
+                id= "salon_input"
+                onChange= {(evt) => {this.onUpdateHairshop(evt.target.value)}}
+                placeholder = "e.g.) Hongdae Hairshop" />
             </Form.Item> 
             <Button type = "primary"
               htmlType = "submit"
               id = "searchagain"
               onClick= { () => {this.onClickSearchAgain()}}>
-              Search Again ?
+              Clear Search
             </Button>  
             <style > @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap'); </style>
           </Form > 

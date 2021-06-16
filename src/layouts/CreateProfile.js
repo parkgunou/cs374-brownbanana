@@ -115,26 +115,20 @@ export default class CreateProfile extends React.Component {
                 <Input
                   size='large'
                   placeholder="Your name"
-                  onChange={(evt) => {
-                    console.log(evt)
-                    this.onUpdateName(evt.target.value)
+                  onChange={(evt) => {this.onUpdateName(evt.target.value)
                   }}  
                 />
                 <Text strong>Current Workplace</Text>
                   <Input
                     size='large'                     
                     placeholder="e.g) KAIST Hairshop"
-                    onChange={(evt) => {
-                      console.log(evt)
-                      this.onUpdatesalon(evt.target.value)}}  
+                    onChange={(evt) => {this.onUpdatesalon(evt.target.value)}}  
                   />
                 <Text strong>About me</Text>
                   <TextArea
                     size='large'
                     showCount maxLength={500}
-                    onChange={(evt) => {
-                      console.log(evt)
-                      this.onUpdateintro(evt.target.value)}}  
+                    onChange={(evt) => {this.onUpdateintro(evt.target.value)}}  
                   />
                 <Button type="primary" onClick={() => this.clickSave()}>
                   Save
