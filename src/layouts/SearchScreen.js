@@ -205,9 +205,10 @@ export default class SearchScreen extends React.Component {
                   image = { item.profile_img_url }
                   reviews = { item.review_keys.length }
                   followers = '42'
-                  rating = '4.58' />
+                  rating = '4.58 / 5.0' />
               )
-            } /> 
+            }
+          />
         </Content > 
       </Layout >
     )

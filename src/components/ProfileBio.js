@@ -58,7 +58,7 @@ export default class ProfileBio extends React.Component {
               <div>
                 <Text className="spannedline" >Reviews <b>{this.state.reviews.length}</b></Text>
                 <Text className="spannedline" >Followers <b>{this.state.followerCount}</b></Text>
-                <Text className="spannedline" >Rating <b>{this.getRating()}</b></Text>
+                <Text className="spannedline" >Rating <b>{this.getRating()} / 5.0</b></Text>
               </div>
               <Paragraph ellipsis={{ rows: 3, expandable: true }}>
                 {this.state.information}

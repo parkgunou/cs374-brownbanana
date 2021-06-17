@@ -26,7 +26,7 @@ export default class ReviewListItem extends React.Component {
         <Text strong>{review.menu}</Text>
         <Space direction='horizontal'>
             {this.ratingStar()}
-            <Text>{review.rating}.0</Text>
+            <Text>{review.rating}.0 / 5.0</Text>
         </Space>
         <Text>{review.description}</Text>
         <Space direction='horizontal'>
