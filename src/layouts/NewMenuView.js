@@ -189,7 +189,7 @@ export default class NewMenuView extends React.Component {
           </Row>
           <Row>
             <Col flex="250px" >
-              <Title level={4} >Time consumed</Title>
+              <Title level={4} >Time consumed (min)</Title>
             </Col>
             <Col flex="auto" >
               <Input
